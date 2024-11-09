@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIRATATHEJOCA</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <style>
+    .toggle-btn {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toggle-btn img { width: 0.95rem; }
+  </style>
+  <script src="https://hcaptcha.com/1/api.js" async defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <h2 class="piratathejoca">
+        <span> PIRATATHEJOCA </span>
+        <img src="./assets/piratathejoca.svg" alt="Logo PIRATATHEJOCA" />
+      </h2>
+      <div class="form">
+        <!-- Campo de RA -->
+        <div class="form-control">
+          <label for="ra">RA</label>
+          <input type="text" id="ra" name="ra" placeholder="Ex: 000111111sp" />
+          <button class="clear-btn" id="clear-ra" onclick="clearInput('ra')">
+            <img src="./assets/close.svg" alt="Limpar" />
+          </button>
+        </div>
+        <!-- Campo de Senha -->
+        <div class="form-control">
+          <label for="pwd">Senha</label>
+          <input type="password" id="pwd" name="pwd" placeholder="Digite sua senha" />
+          <button class="toggle-btn" id="toggle-pwd" onclick="togglePasswordVisibility()">
+            <img src="./assets/eye.svg" alt="Mostrar senha" />
+          </button>
+        </div>
+        <!-- hCaptcha -->
+        <div class="captcha-container">
+          <div class="h-captcha" data-sitekey="SEU_SITE_KEY_HCAPTCHA"></div>
+        </div>
+        <!-- Botões de Ação -->
+        <div class="form-buttons">
+          <button onclick="verifyCaptcha('fazerlicaonormal')">Atividades Pendentes</button>
+          <button onclick="verifyCaptcha('fazerlicaoatrasada')">Atividades Expiradas</button>
+        </div>
+      </div>
+      <div class="credits">
+        <span>Entre no nosso servidor do Discord</span>
+        <a href="https://discord.gg/platformdestroyer" class="discord">
+          <img src="./assets/discord.svg" alt="Discord" />
+          <span> Platform Discord </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="donationOverlay">
+    <div class="card">
+      <button class="close-button" onclick="closeOverlay()">
+        <img src="./assets/close.svg" alt="Fechar" />
+      </button>
+      <div class="card-body">
+        <h3 class="card-title">
+          Ajude o <br />
+          <span>PIRATATHEJOCA!</span>
+        </h3>
+        <p class="card-text">
+          Sua doação mantém nossa plataforma online e em funcionamento.
+        </p>
+        <p class="card-text">
+          Ajude o PIRATATHEJOCA a continuar gratuitamente e a permanecer vivo doando qualquer valor :D
+        </p>
+        <a href="https://pixgg.com/marcos10pc" class="donate-button" target="_blank">Doar</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/js/script.js" async defer></script>
+  <script>
+    // Função para limpar o campo
+    function clearInput(id) {
+      document.getElementById(id).value = '';
+    }
+
+    // Função para alternar visibilidade da senha
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('pwd');
+      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+
+    // Função para verificar o captcha antes de enviar
+    function verifyCaptcha(funcName) {
+      const hcaptchaResponse = hcaptcha.getResponse();
+      if (hcaptchaResponse.length === 0) {
+        alert('Por favor, complete o captcha.');
+      } else {
+        const name = document.getElementById('ra').value;
+        const password = document.getElementById('pwd').value;
+        if (funcName === 'fazerlicaonormal') {
+          fazerlicaonormal(name, password);
+        } else if (funcName === 'fazerlicaoatrasada') {
+          fazerlicaoatrasada(name, password);
+        }
+        hcaptcha.reset();
+      }
+    }
+
+    function fazerlicaonormal(name, password) {
+      console.log('Atividades Pendentes:', name, password);
+    }
+
+    function fazerlicaoatrasada(name, password) {
+      console.log('Atividades Expiradas:', name, password);
+    }
+
+    // Funções de abertura e fechamento do overlay
+    function closeOverlay() {
+      document.getElementById('donationOverlay').style.display = 'none';
+    }
+
+    function openOverlay() {
+      document.getElementById('donationOverlay').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
